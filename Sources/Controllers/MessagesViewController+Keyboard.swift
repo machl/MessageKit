@@ -89,7 +89,14 @@ internal extension MessagesViewController {
             messagesCollectionView.setContentOffset(contentOffset, animated: false)
         }
         
-        messageCollectionViewBottomInset = newBottomInset
+        if #available(iOS 13.0, *) {
+            UIView.performWithoutAnimation {
+                messageCollectionViewBottomInset = newBottomInset
+            }
+        } else {
+            messageCollectionViewBottomInset = newBottomInset
+        }
+        
     }
 
     // MARK: - Inset Computation
