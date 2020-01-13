@@ -83,15 +83,25 @@ internal extension MessagesViewController {
         
         let newBottomInset = requiredScrollViewBottomInset(forKeyboardFrame: keyboardEndFrame)
         let differenceOfBottomInset = newBottomInset - messageCollectionViewBottomInset
+        
         let isKeyboardAppearing = differenceOfBottomInset > 0
+        let hasLessContentThanHeight = messagesCollectionView.collectionViewLayout.collectionViewContentSize.height < (messagesCollectionView.bounds.size.height - messageCollectionViewBottomInset)
         
         if maintainPositionOnKeyboardFrameChanged && differenceOfBottomInset != 0 {
             let contentOffset = CGPoint(x: messagesCollectionView.contentOffset.x, y: messagesCollectionView.contentOffset.y + differenceOfBottomInset)
-            messagesCollectionView.setContentOffset(contentOffset, animated: isKeyboardAppearing)
+            if isKeyboardAppearing {
+                messagesCollectionView.setContentOffset(contentOffset, animated: !hasLessContentThanHeight)
+            } else {
+                messagesCollectionView.setContentOffset(contentOffset, animated: false)
+            }
         }
         
         if #available(iOS 13.0, *) {
-            UIView.performWithoutAnimation {
+            if !hasLessContentThanHeight {
+                UIView.performWithoutAnimation {
+                    messageCollectionViewBottomInset = newBottomInset
+                }
+            } else {
                 messageCollectionViewBottomInset = newBottomInset
             }
         } else {
