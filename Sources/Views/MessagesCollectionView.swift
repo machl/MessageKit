@@ -84,9 +84,17 @@ open class MessagesCollectionView: UICollectionView {
     }
     
     private func setupGestureRecognizers() {
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
-        tapGesture.delaysTouchesBegan = true
-        addGestureRecognizer(tapGesture)
+        let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
+        singleTap.delaysTouchesBegan = true
+        singleTap.numberOfTapsRequired = 1
+        addGestureRecognizer(singleTap)
+        
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapGesture(_:)))
+        doubleTap.delaysTouchesBegan = true
+        doubleTap.numberOfTapsRequired = 2
+        addGestureRecognizer(doubleTap)
+        
+        singleTap.require(toFail: doubleTap)
     }
     
     @objc
@@ -98,6 +106,17 @@ open class MessagesCollectionView: UICollectionView {
         
         let cell = cellForItem(at: indexPath) as? MessageCollectionViewCell
         cell?.handleTapGesture(gesture)
+    }
+    
+    @objc
+    open func handleDoubleTapGesture(_ gesture: UIGestureRecognizer) {
+        guard gesture.state == .ended else { return }
+        
+        let touchLocation = gesture.location(in: self)
+        guard let indexPath = indexPathForItem(at: touchLocation) else { return }
+        
+        let cell = cellForItem(at: indexPath) as? MessageCollectionViewCell
+        cell?.handleDoubleTapGesture(gesture)
     }
 
     public func scrollToBottom(animated: Bool = false) {

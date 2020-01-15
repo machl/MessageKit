@@ -179,6 +179,18 @@ open class MessageContentCell: MessageCollectionViewCell {
             delegate?.didTapBackground(in: self)
         }
     }
+    
+    /// Handle double tap gesture on contentView
+    open override func handleDoubleTapGesture(_ gesture: UIGestureRecognizer) {
+        let touchLocation = gesture.location(in: self)
+        
+        switch true {
+        case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
+            delegate?.didDoubleTapMessage(in: self)
+        default:
+            return
+        }
+    }
 
     /// Handle long press gesture, return true when gestureRecognizer's touch point in `messageContainerView`'s frame
     open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
