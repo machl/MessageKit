@@ -61,6 +61,9 @@ public struct AvatarPosition: Equatable {
         /// Aligns the `AvatarView`'s bottom edge to the `MessageContainerView`s bottom edge.
         case messageBottom
         
+        /// Aligns the `AvatarView`'s bottom edge to the `messageBottomLabel`'s bottom edge.
+        case messageLabelBottom
+        
         /// Aligns the `AvatarView`'s bottom edge to the cell's bottom edge.
         case cellBottom
         

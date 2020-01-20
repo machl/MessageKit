@@ -230,6 +230,8 @@ open class MessageContentCell: MessageCollectionViewCell {
             origin.y = messageContainerView.frame.maxY - attributes.avatarSize.height
         case .messageCenter: // Needs messageContainerView frame to be set
             origin.y = messageContainerView.frame.midY - (attributes.avatarSize.height/2)
+        case .messageLabelBottom:
+            origin.y = messageBottomLabel.frame.maxY - attributes.avatarSize.height
         case .cellBottom:
             origin.y = attributes.frame.height - attributes.avatarSize.height
         default:
@@ -245,7 +247,7 @@ open class MessageContentCell: MessageCollectionViewCell {
         var origin: CGPoint = .zero
 
         switch attributes.avatarPosition.vertical {
-        case .messageBottom:
+        case .messageBottom, .messageLabelBottom:
             origin.y = attributes.size.height - attributes.messageContainerPadding.bottom - attributes.cellBottomLabelSize.height - attributes.messageBottomLabelSize.height - attributes.messageContainerSize.height - attributes.messageContainerPadding.top
         case .messageCenter:
             if attributes.avatarSize.height > attributes.messageContainerSize.height {
