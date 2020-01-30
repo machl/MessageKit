@@ -51,4 +51,9 @@ open class MessageCollectionViewCell: UICollectionViewCell {
     open func handleLongPressGesture(_ gesture: UIGestureRecognizer) {
         // Should be overridden
     }
+    
+    /// Handle force/deep press gesture on contentView and its subviews.
+    open func handleForcePressGesture(_ gesture: UIGestureRecognizer) {
+        // Should be overridden
+    }
 }

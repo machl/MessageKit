@@ -99,9 +99,14 @@ open class MessagesCollectionView: UICollectionView {
         longPress.numberOfTouchesRequired = 1
         addGestureRecognizer(longPress)
         
+        let forcePress = DeepPressGestureRecognizer(target: self, action: #selector(handleForcePressGesture(_:)))
+        forcePress.forceThreshold = 0.75
+        addGestureRecognizer(forcePress)
+        
         singleTap.require(toFail: doubleTap)
         singleTap.require(toFail: longPress)
         doubleTap.require(toFail: longPress)
+        singleTap.require(toFail: forcePress)
     }
     
     @objc
@@ -136,6 +141,18 @@ open class MessagesCollectionView: UICollectionView {
         
         let cell = cellForItem(at: indexPath) as? MessageCollectionViewCell
         cell?.handleLongPressGesture(gesture)
+    }
+    
+    @objc
+    open func handleForcePressGesture(_ gesture: UIGestureRecognizer) {
+        // catch beginning of the force/deep press
+        guard gesture.state == .began else { return }
+        
+        let touchLocation = gesture.location(in: self)
+        guard let indexPath = indexPathForItem(at: touchLocation) else { return }
+        
+        let cell = cellForItem(at: indexPath) as? MessageCollectionViewCell
+        cell?.handleForcePressGesture(gesture)
     }
 
     public func scrollToBottom(animated: Bool = false) {

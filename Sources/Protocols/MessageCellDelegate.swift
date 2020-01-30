@@ -52,6 +52,8 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
     func didDoubleTapMessage(in cell: MessageCollectionViewCell)
     
     func didLongPressMessage(in cell: MessageCollectionViewCell)
+    
+    func didForcePressMessage(in cell: MessageCollectionViewCell)
 
     /// Triggered when a tap occurs in the `AvatarView`.
     ///
@@ -164,6 +166,8 @@ public extension MessageCellDelegate {
     func didDoubleTapMessage(in cell: MessageCollectionViewCell) {}
     
     func didLongPressMessage(in cell: MessageCollectionViewCell) {}
+    
+    func didForcePressMessage(in cell: MessageCollectionViewCell) {}
 
     func didTapAvatar(in cell: MessageCollectionViewCell) {}
 
