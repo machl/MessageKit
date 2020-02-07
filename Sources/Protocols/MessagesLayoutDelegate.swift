@@ -121,6 +121,8 @@ public protocol MessagesLayoutDelegate: AnyObject {
     /// - Note:
     ///   The default implementation will throw fatalError(). You must override this method if you are using messages with MessageType.custom.
     func customCellSizeCalculator(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator
+    
+    func avatarSize(for message: MessageType, at indexPath: IndexPath) -> CGSize?
 }
 
 public extension MessagesLayoutDelegate {
@@ -159,5 +161,9 @@ public extension MessagesLayoutDelegate {
     
     func customCellSizeCalculator(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator {
         fatalError("Must return a CellSizeCalculator for MessageKind.custom(Any?)")
+    }
+    
+    func avatarSize(for message: MessageType, at indexPath: IndexPath) -> CGSize? {
+        return nil
     }
 }

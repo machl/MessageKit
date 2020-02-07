@@ -71,7 +71,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let indexPath = attributes.indexPath
         let message = dataSource.messageForItem(at: indexPath, in: messagesLayout.messagesCollectionView)
 
-        attributes.avatarSize = avatarSize(for: message)
+        attributes.avatarSize = avatarSize(for: message, at: indexPath)
         attributes.avatarPosition = avatarPosition(for: message)
         attributes.avatarLeadingTrailingPadding = avatarLeadingTrailingPadding
 
@@ -106,7 +106,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let cellTopLabelHeight = cellTopLabelSize(for: message, at: indexPath).height
         let messageTopLabelHeight = messageTopLabelSize(for: message, at: indexPath).height
         let messageVerticalPadding = messageContainerPadding(for: message).vertical
-        let avatarHeight = avatarSize(for: message).height
+        let avatarHeight = avatarSize(for: message, at: indexPath).height
         let avatarVerticalPosition = avatarPosition(for: message).vertical
         let accessoryViewHeight = accessoryViewSize(for: message).height
 
@@ -165,8 +165,13 @@ open class MessageSizeCalculator: CellSizeCalculator {
         }
         return position
     }
+    
+    open func avatarSize(for message: MessageType, at indexPath: IndexPath) -> CGSize {
+        let layoutDelegate = messagesLayout.messagesLayoutDelegate
+        return layoutDelegate.avatarSize(for: message, at: indexPath) ?? defaultAvatarSize(for: message)
+    }
 
-    open func avatarSize(for message: MessageType) -> CGSize {
+    private func defaultAvatarSize(for message: MessageType) -> CGSize {
         let dataSource = messagesLayout.messagesDataSource
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
         return isFromCurrentSender ? outgoingAvatarSize : incomingAvatarSize
@@ -266,7 +271,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
     }
 
     open func messageContainerMaxWidth(for message: MessageType) -> CGFloat {
-        let avatarWidth = avatarSize(for: message).width
+        let avatarWidth = defaultAvatarSize(for: message).width
         let messagePadding = messageContainerPadding(for: message)
         let accessoryWidth = accessoryViewSize(for: message).width
         let accessoryPadding = accessoryViewPadding(for: message)
