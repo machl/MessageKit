@@ -123,6 +123,8 @@ public protocol MessagesLayoutDelegate: AnyObject {
     func customCellSizeCalculator(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> CellSizeCalculator
     
     func avatarSize(for message: MessageType, at indexPath: IndexPath) -> CGSize?
+    
+    func avatarLeadingTrailingPadding(for message: MessageType) -> CGFloat
 }
 
 public extension MessagesLayoutDelegate {
@@ -165,5 +167,9 @@ public extension MessagesLayoutDelegate {
     
     func avatarSize(for message: MessageType, at indexPath: IndexPath) -> CGSize? {
         return nil
+    }
+    
+    func avatarLeadingTrailingPadding(for message: MessageType) -> CGFloat {
+        return 0
     }
 }
