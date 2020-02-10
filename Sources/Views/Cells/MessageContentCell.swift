@@ -328,11 +328,18 @@ open class MessageContentCell: MessageCollectionViewCell {
     open func layoutMessageTopLabel(with attributes: MessagesCollectionViewLayoutAttributes) {
         messageTopLabel.textAlignment = attributes.messageTopLabelAlignment.textAlignment
         messageTopLabel.textInsets = attributes.messageTopLabelAlignment.textInsets
-
-        let y = messageContainerView.frame.minY - attributes.messageContainerPadding.top - attributes.messageTopLabelSize.height
-        let origin = CGPoint(x: 0, y: y)
         
-        messageTopLabel.frame = CGRect(origin: origin, size: attributes.messageTopLabelSize)
+        var origin: CGPoint = .zero
+        var size: CGSize = attributes.messageTopLabelSize
+
+        origin.y = messageContainerView.frame.minY - attributes.messageContainerPadding.top - attributes.messageTopLabelSize.height
+        
+        if attributes.avatarPosition.vertical == .messageLabelTop && attributes.avatarPosition.horizontal == .cellLeading {
+            origin.x = attributes.avatarSize.width + attributes.avatarLeadingTrailingPadding
+            size.width -= origin.x
+        }
+                
+        messageTopLabel.frame = CGRect(origin: origin, size: size)
     }
 
     /// Positions the message bubble's bottom label.
