@@ -162,57 +162,21 @@ open class MessageContentCell: MessageCollectionViewCell {
 
         switch true {
         case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
-            delegate?.didTapMessage(in: self)
+            delegate?.didTapMessage(in: self, with: gesture)
         case avatarView.frame.contains(touchLocation) && !avatarView.isHidden:
-            delegate?.didTapAvatar(in: self)
+            delegate?.didTapAvatar(in: self, with: gesture)
         case cellTopLabel.frame.contains(touchLocation):
-            delegate?.didTapCellTopLabel(in: self)
+            delegate?.didTapCellTopLabel(in: self, with: gesture)
         case cellBottomLabel.frame.contains(touchLocation):
-            delegate?.didTapCellBottomLabel(in: self)
+            delegate?.didTapCellBottomLabel(in: self, with: gesture)
         case messageTopLabel.frame.contains(touchLocation):
-            delegate?.didTapMessageTopLabel(in: self)
+            delegate?.didTapMessageTopLabel(in: self, with: gesture)
         case messageBottomLabel.frame.contains(touchLocation):
-            delegate?.didTapMessageBottomLabel(in: self)
+            delegate?.didTapMessageBottomLabel(in: self, with: gesture)
         case accessoryView.frame.contains(touchLocation):
-            delegate?.didTapAccessoryView(in: self)
+            delegate?.didTapAccessoryView(in: self, with: gesture)
         default:
-            delegate?.didTapBackground(in: self)
-        }
-    }
-    
-    /// Handle double tap gesture on contentView
-    open override func handleDoubleTapGesture(_ gesture: UIGestureRecognizer) {
-        let touchLocation = gesture.location(in: self)
-        
-        switch true {
-        case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
-            delegate?.didDoubleTapMessage(in: self)
-        default:
-            return
-        }
-    }
-    
-    /// Handle long press gesture on contentView
-    open override func handleLongPressGesture(_ gesture: UIGestureRecognizer) {
-        let touchLocation = gesture.location(in: self)
-        
-        switch true {
-        case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
-            delegate?.didLongPressMessage(in: self)
-        default:
-            return
-        }
-    }
-    
-    /// Handle force/deep press gesture on contentView
-    open override func handleForcePressGesture(_ gesture: UIGestureRecognizer) {
-        let touchLocation = gesture.location(in: self)
-        
-        switch true {
-        case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
-            delegate?.didForcePressMessage(in: self)
-        default:
-            return
+            delegate?.didTapBackground(in: self, with: gesture)
         }
     }
 

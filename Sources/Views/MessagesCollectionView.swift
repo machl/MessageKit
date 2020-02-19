@@ -85,12 +85,12 @@ open class MessagesCollectionView: UICollectionView {
     
     private func setupGestureRecognizers() {
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
-        singleTap.delaysTouchesBegan = true
+        singleTap.delaysTouchesBegan = false // allow cell highlight to apply
         singleTap.numberOfTapsRequired = 1
         addGestureRecognizer(singleTap)
         
-        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTapGesture(_:)))
-        doubleTap.delaysTouchesBegan = true
+        let doubleTap = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
+        doubleTap.delaysTouchesBegan = false // allow cell highlight to apply
         doubleTap.numberOfTapsRequired = 2
         addGestureRecognizer(doubleTap)
         
@@ -121,17 +121,6 @@ open class MessagesCollectionView: UICollectionView {
     }
     
     @objc
-    open func handleDoubleTapGesture(_ gesture: UIGestureRecognizer) {
-        guard gesture.state == .ended else { return }
-        
-        let touchLocation = gesture.location(in: self)
-        guard let indexPath = indexPathForItem(at: touchLocation) else { return }
-        
-        let cell = cellForItem(at: indexPath) as? MessageCollectionViewCell
-        cell?.handleDoubleTapGesture(gesture)
-    }
-    
-    @objc
     open func handleLongPressGesture(_ gesture: UIGestureRecognizer) {
         // catch beginning of the long press
         guard gesture.state == .began else { return }
@@ -140,7 +129,7 @@ open class MessagesCollectionView: UICollectionView {
         guard let indexPath = indexPathForItem(at: touchLocation) else { return }
         
         let cell = cellForItem(at: indexPath) as? MessageCollectionViewCell
-        cell?.handleLongPressGesture(gesture)
+        cell?.handleTapGesture(gesture)
     }
     
     @objc
@@ -152,7 +141,7 @@ open class MessagesCollectionView: UICollectionView {
         guard let indexPath = indexPathForItem(at: touchLocation) else { return }
         
         let cell = cellForItem(at: indexPath) as? MessageCollectionViewCell
-        cell?.handleForcePressGesture(gesture)
+        cell?.handleTapGesture(gesture)
     }
 
     public func scrollToBottom(animated: Bool = false) {
